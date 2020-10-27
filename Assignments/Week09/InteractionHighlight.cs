@@ -16,33 +16,28 @@ public class InteractionHighlight : MonoBehaviour
 
     private void Awake()
     {
-        mat_Original = GetComponent<Material>();
         meshRenderer = GetComponent<MeshRenderer>();
+        mat_Original = meshRenderer.material;
         grabObject = GetComponent<XRGrabInteractable>();
 
-        grabObject.onActivate.AddListener(SetHighlight);
-        grabObject.onDeactivate.AddListener(SetOriginal);
-        grabObject.onHoverEnter.AddListener(SetHover);
-        
-    }
-    private void OnDestroy()
-    {
-        grabObject.onActivate.RemoveListener(SetHighlight);
-        grabObject.onDeactivate.RemoveListener(SetOriginal);
-        grabObject.onDeactivate.RemoveListener(SetHover);
-    }
-    private void SetHover(XRBaseInteractor arg0)
-    {
-        meshRenderer.material = mat_Hover;
+        grabObject.onHoverEnter.AddListener(SetHoverMaterial);
+        grabObject.onHoverExit.AddListener(SetOriginalMaterial);
+        grabObject.onHoverEnter.AddListener(SetHighlightMaterial);
     }
 
-    private void SetOriginal(XRBaseInteractor arg0)
+    private void SetHighlightMaterial(XRBaseInteractor arg0)
+    {
+        meshRenderer.material = mat_Highlight;
+    }
+
+    private void SetOriginalMaterial(XRBaseInteractor arg0)
     {
         meshRenderer.material = mat_Original;
     }
 
-    private void SetHighlight(XRBaseInteractor arg0)
+    private void SetHoverMaterial(XRBaseInteractor arg0)
     {
-        meshRenderer.material = mat_Highlight;
+        meshRenderer.material = mat_Hover;
     }
+    
 }
